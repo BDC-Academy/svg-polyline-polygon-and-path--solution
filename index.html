@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="BDC Academy: Visualizing data with D3.js" />
+  <title>BDC Academy: Visualizing data with D3.js</title>
+
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <script defer src="js/index.js"></script>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root">
+    <svg class="my-graphic" width="400" height="400">
+
+      <!-- TODO: 1. draw a triangle with a polyline
+        Besides normal lines, svg provides a basic shape element called polyline which is a group of connected STRAIGHT lines.
+        A polyline will take multiple x and y coordinates to define the starting and ending point of each line. 
+        The ending point of the first line will automatically become the starting point of the second line and so on.
+        To define the x and y coordinates of each point, the polyline has a 'points' attribute.
+        The points attribute is a string of x y coordinates where each number is separated by a space or comma.
+        For example, if we have the following array [{ x: 0, y: 0 }, { x: 1, y: 1 }, { x: 2, y: 2 }] 
+        the corresponding points string could look like points="0 0,1 1,2 2" OR points="0,0 1,1 2,2"
+        Draw a triangle with a polyline element of 200px by 200px in the center of the svg:
+          - Start at x 100 and y 100, draw 200 px to the right, then 200px down and then back to the starting point
+          - Set the fill color to 'transparent' using the fill attribute
+          - Add a stroke and stroke-width to make the line visible
+          - Set the stroke-width to 10(px) and notice how the triangle is imperfect
+          - We can fix this by rounding the start and end of the line with the attribute 'stroke-linecap', which can have the value 'but', 'square' or 'round'
+          - Now we only have one rounded corner. To also round the other corners we can use the 'stroke-linejoin' attribute and set it to 'round' also.
+
+        Note: a polyline will have a default color (black) to 'fill' it's area. To remove this, make the color transparent using the fill attribute.
+        Note2: just like a line element, a polyline needs a 'stroke' and stroke-width to make the line visible.
+      -->
+      <polyline points="100 100,300 100,300 300,100 100" fill="transparent" stroke="red" stroke-width="10"
+        stroke-linecap="round" stroke-linejoin="round" />
+
+      <!-- TODO: 2. draw a triangle with a polygon
+        A polygon works much the same as a polyline, with the important difference 
+        that it will always automatically close the figure you draw with a straight line from the ending point to the starting point.
+          - Use a polygon element to draw an opposite triangle to the one we already have, but only use THREE x y coordinate pairs in the points attribute
+          - Give it a blue stroke and stroke-width of 10(px)
+          - Notice this triangle IS perfectly drawn at the corners.
+          - To make a nice square you could also round the corners of the polygon
+
+        Note: The polygon will add about 75% of the stroke-width to draw the sharp corners.
+        Note2: we can conclude that a polygon is better when drawing a closed shape for two reasons: 
+          - auto closing the shape
+          - perfect joining of corners
+        So, use polygon for drawing a closed shape and polyline for drawing an open shape
+        -->
+      <polygon points="100 100,100 300,300 300" fill="transparent" stroke="#294899" stroke-width="10"
+        stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+    <svg class="my-graphic" width="400" height="400">
+      <!-- TODO: 3. draw a closed star with a polygon
+        You can draw al kinds of shapes with polylines and polygons, as long as the structure is drawn with straight lines.
+        Let's try and draw a five point star using a polygon by only using 5 x y points 
+          - Start at the x 200 and y 50 point. Use nice rounded numbers for the points for now
+          - Don't forget to add a stroke and stroke-width and make the fill transparent
+          - Draw to one of the points that is (kind of) opposite to the current one, so the bottom right one
+          - Repeat the previous step for each of the 5 star points
+          - To really make it a star instead of a pentagram, change the fill color and / or remove the stroke
+          - Try to make a perfect star with 200 width and height where the 5 triangles are exactly the same by playing with the coordinates
+
+          Note: drawing an open star is a bit more complex, as we will see in assigments later on
+      -->
+      <!-- <line x1="0" y1="50" x2="400" y2="50" stroke="black" stroke-width="2" /> -->
+      <!-- fine star, 200 x 200 big legs small arms  -->
+      <!-- <polygon id="star" points="200 50,275 250,100 125,300 125,125 250" stroke="gold" stroke-width="0" fill="gold" /> -->
+      <!-- *almost* perfect star, 200 x 200  -->
+      <polygon id="star" points="200 50,262.5 250,100 125,300 125,137.5 250" stroke="gold" stroke-width="0"
+        fill="gold" />
+
+      <!-- calculated 5 points star, still wobly -->
+      <!-- <polygon id="star" points="100, 0, 114.6881881428473, 79.7698954752992, 195.085946050647, 69.03771869429758, 123.78378440584572, 107.70270078194982, 158.8815561967795, 180.826742726931, 100.03981632291217, 124.99996829318849, 41.37620008299729, 181.01388821239993, 76.2408716779656, 107.77842023659706, 4.815912118431413, 69.34075320309012, 85.2474473833856, 79.81678441640123" stroke="gold" stroke-width="0" fill="gold" /> -->
+      <!-- calculated 6 points star, uneven number of points make it wobly -->
+      <!-- <polygon id="star" points="100, 0, 112.49425256607756, 78.34604763986343, 186.57598394923446, 49.95403109917942, 124.99999207329586, 99.98009183223166, 186.65558000562658, 149.90801993556198, 112.52872395034096, 121.63402588923645, 100.15926529164872, 199.99987317275395, 87.54025051041873, 121.67382390481383, 13.50383171103006, 150.18379092223097, 75.00007134030704, 100.05972445280703, 13.265043743752642, 50.230055623631074, 87.43683644506675, 78.38595545734216" stroke="gold" stroke-width="0" fill="gold" /> -->
+
+      <!-- TODO: 4. making our star spin
+        Our star is pretty static right now, so let's make it spin!
+        To make our star rotate, you can transform it! 
+        You can use the svg transform attribute which actually is an important property when creating charts with D3.js,
+        but you can also use css which is simpler in most cases, so let's do that.
+
+          - Add an id to our polygon called 'star'
+          - Add a transform: rotate(180deg) on the #star in the style.css and watch the star disappear of screen :O
+          - It disappeared because you still need to define the center point our polygon needs to rotate around. 
+            Luckily css provides an easy 'transform-origin' property, use it and set it center.
+
+        Okay our star rotates, but it still seems to move of place. 
+        That is because it is not rotating around the center of our bounding box yet (see note).
+        CSS provides a 'transform-box' property with the value 'fill-box' to make our star rotate around the center of it's bounding box.
+
+          - Add the css 'transform-box' property with value 'fill-box' to make our star rotate around the center of it's bounding box
+          - Lastly, add a css 'transition' property with  value 'transform 2s' to animate our star for 2 seconds.
+          - Can you make it spin infinitly using keyframes?
+       
+        
+        Note: The bounding box of a shape/element is the calculated rect that the shape fits inside.
+        If you hover the element in the chrome inspector, you see a rectangular shape, this is the bounding box of our polygon element.
+        Note2: you can also use a negative number of degrees to make it spin the other way :)
+      -->
+    </svg>
+    <svg class="my-graphic" width="400" height="400">
+      <!-- TODO: 5. better use a path element
+        We've created relatively simple shapes using only straight lines, but what if you want to create more complex
+        shapes which als has curved lines? Well, that is what the path element is for! 
+        A path element is the most general shape that can be used in SVG. 
+        Using a path element you can basically draw any of the other types of shapes, bezier curves, quadratic curves, and many more.
+        Before going any further, it is a good idea to read what the mozilla tutorial has to say about SVG paths (see the links in the README.MD).
+
+        In a nutshell: The shape of a <path> element is defined by one parameter: d. The d attribute contains a series of commands and parameters used by those commands.
+        Below are a couple of path elements that all draw the star shape, but with different commands. uncomment them one at a time and see if you understand what is happening in the d attribute.
+        
+        Let's draw a couple of basis shapes using the path element (don't forget to add strokes to each path):
+          - Draw a square of 200 by 200 units using a new path element
+            - Start by moving to 100 50 (use move command)
+            - Draw each line using a H or V command
+          - Draw a triangle the same size/width as the square using a new path element
+            - Start by moving to 200 50 (use move command)
+            - Draw each line using a L or H command
+            - use the Z command to draw the last line
+          
+        Let's make our triangle curve a bit by adding a quadratic bezier curve to the opposite/horizontal side.
+          - Remove the H command and parameters that draws the opposite/horizontal side 
+          - Add the absolute quadratic bezier curve command (big Q)
+          - The first two parameters x1 and y1 act as the control point which define the slope of the curve.
+            - We want a nicely defined round curve going inwards of the triangle, so set x to the center of the triangle x, namely 200 units.
+            - The y1 of the control point determines how 'pointy' our curve is. Set this to 200 units for now.
+          - The last two parameters determine the endpoint of the line drawn.
+            - The endpoint x and y coordinates of the line are the same as it was before and the same as the bottom left corner of the square.
+          - Fiddle a bit with the coordinates of the control point to see what it does
+           - Can you figure out how to do this using relative positioned quadratic bezier curve (small q)?
+
+          Drawing a perfect circle using a path element is practically impossible to do with bezier curves,
+          so instead we use arcs. To draw a perfect circle we need to draw 2 arcs opposite of eachother.
+          - Use a new path element to draw a circle the same size as the square using, keep the tutorial on arcs close by hand to understand what is going on.
+            - Start by moving to 200 50 (use move command)
+            - Use the absolute positioning arc command (big A)
+            - Give the first arc a radius of 100 (x and y: first two parameters of an arc)
+            - to draw a perfect left half circle, set the rotation to 0, the large-arc-flag to 0 and the sweep-flag to 0
+            - Draw the first arc from the starting point 200 units down (x and y endpoint of the line: last two parameters of an arc) 
+            - stroke!
+            - Play with the rotation and flags a bit to see what happens
+            - Use the absolute positioning arc command (big A) to start the second arc
+            - Give it the same radius as the first arc, rotation and flags are still 0
+            - You automatically start at the endpoint of the previous arc, so you need to draw back to the startingpoint of the first arc (x and y endpoint of the line: last two parameters of an arc).
+            - Can you figure out how to do this using relative positioned arcs (small a)?
+
+      -->
+      <!-- below is our star shape drawn with a path element with different commands -->
+      <!-- <path d="M 200 50 L 262.5 250 100 125 300 125 137.5 250 200 50" stroke="gold" stroke-width="2" fill="transparent" /> -->
+      <!-- <path d="M 200 50 L 262.5 250 100 125 300 125 137.5 250 Z" stroke="gold" stroke-width="2" fill="transparent" /> -->
+      <!-- <path d="M 200 50 L 262.5 250 L 100 125 L 300 125 L 137.5 250 Z" stroke="gold" stroke-width="2" fill="transparent" /> -->
+      <!-- <path d="M 200 50 L 262.5 250 L 100 125 H 300 L 137.5 250 Z" stroke="gold" stroke-width="2" fill="transparent" /> -->
+      <!-- <path d="M 200 50 l 62.5 200 l -162.5 -125 l 200 0 l-162.5 127.5 Z" stroke="gold" stroke-width="2" fill="transparent" /> -->
+
+      <path d="M 100 50 H 300 V 250 H 100 Z" stroke="#294899" stroke-width="10" fill="transparent" />
+      <!-- <path d="M 200 50 L 300 250 H 100 Z" stroke="red" stroke-width="10" fill="transparent" /> -->
+      <path d="M 200 50 L 300 250 Q 200 200 100 250 Z" stroke="red" stroke-width="10" fill="transparent" />
+      <!-- relative path bezier -->
+      <!-- <path d="M 200 50 L 300 250 q -100 -50 -200 0 Z" stroke="red" stroke-width="10" fill="transparent" /> -->
+      <path d="M 200 50 A 100 100 0 0 0 200 250 A 100 100 0 0 0 200 50" stroke="yellow" stroke-width="10"
+        fill="transparent" />
+      <!-- relative path arcs -->
+      <!-- <path d="M 200 50 a 100 100 0 0 0 0 200 a 100 100 0 0 0 0 -200" stroke="yellow" stroke-width="10" fill="transparent" /> -->
+    </svg>
+
+    <svg class="my-graphic" width="400" height="400">
+      <!-- TODO: EXTRA: putting our new skills to practice
+        How about showing off our new skills by drawing a car! 
+        Using the elements and shapes you want, duplicate the car.jpg in the _assignment folder.
+
+      Tip: draw the car in the same order as the image. The order of the elements (how they are stacked) is very important here.
+      Tip: the stripes in the window can be done with rects and a clipPath but can also be skipped ;)
+      -->
+      <defs>
+        <clipPath id="front-window">
+          <path d="M 171 284 H 239 V 236 Q 200 230 171 286" />
+        </clipPath>
+        <clipPath id="back-window">
+          <path d="M 171 284 H 239 V 236 Q 200 230 171 286" transform="translate(90) scale(-1, 1)"
+            transform-origin="center" />
+        </clipPath>
+        <linearGradient id="wheel">
+          <stop stop-color="#000000" offset="0" />
+          <stop stop-color="#ffffff" offset="1" />
+        </linearGradient>
+      </defs>
+
+      <!-- when drawing the car, it is usefull to give all child elements a default stroke and fill like this -->
+      <g stroke="#000" stroke-width="2" fill="white">
+        <!-- front light -->
+        <circle r="10" cx="112" cy="327" fill="yellow" />
+        <!-- back light -->
+        <circle r="10" cx="342" cy="327" fill="yellow" />
+        <!-- car body two arcs -->
+        <path d="M 110 337.5 A 60 60 0 0 1 160 275 A 80 70 0 0 1 340 337.5" fill="red" />
+
+        <g>
+          <!-- Door -->
+          <polyline points="240 285, 240 320, 230 330, 185 330, 170 320, 170 285" fill="red" />
+          <!-- doorhandle -->
+          <rect width="14" height="5" x="220" y="295" rx="2" ry="2" fill="#a5a4a9" />
+          <!-- window -->
+          <path d="M 170 285 H 240 V 235 Q 200 230 170 285" fill="#c2ecf7" />
+
+          <!-- front window pattern -->
+          <g clip-path="url(#front-window)" fill="#9fd5e6">
+            <!-- first stripe -->
+            <rect stroke-width="1" width="20" height="90" x="162" y="190" transform="translate(45 45) rotate(45)"
+              transform-origin="center" />
+            <!-- second stripe -->
+            <rect stroke-width="1" width="35" height="90" x="195" y="190" transform="translate(45 45) rotate(45)"
+              transform-origin="center" />
+          </g>
+        </g>
+
+        <g>
+          <!-- back-window, copy front window and mirror it with scale -1 1 -->
+          <path d="M 170 285 H 240 V 235 Q 200 230 170 285" transform="translate(90) scale(-1, 1)"
+            transform-origin="center" fill="#c2ecf7" />
+
+          <!-- back window pattern -->
+          <g clip-path="url(#back-window)" fill="#9fd5e6">
+            <!-- first and second stripe -->
+            <rect stroke-width="1" width="15" height="70" x="220" y="160" transform="translate(45 45) rotate(45)"
+              transform-origin="center" />
+            <!-- third stripe -->
+            <rect stroke-width="1" width="30" height="50" x="255" y="160" transform="translate(45 45) rotate(45)"
+              transform-origin="center" />
+
+          </g>
+        </g>
+        <!-- car floor -->
+        <rect x="100" y="337.5" rx="5" ry="5" width="250" height="20" fill="#a5a4a9" />
+        <!-- front wheel -->
+        <g class="wwheel">
+          <circle r="27.5" cx="150" cy="350" fill="url(#wheel)" />
+          <circle r="12.5" cx="150" cy="350" fill="#a5a4a9" />
+        </g>
+        <!-- back wheel -->
+        <g class="wwheel">
+          <circle r="27.5" cx="300" cy="350" fill="url(#wheel)" />
+          <circle r="12.5" cx="300" cy="350" fill="#a5a4a9" />
+        </g>
+      </g>
+
+      <g id="rroad" transform="translate(0, 380)">
+        <rect width="100" height="10" x="-450" />
+        <rect width="100" height="10" x="-300" />
+        <rect width="100" height="10" x="-150" />
+        <rect width="100" height="10" />
+        <rect width="100" height="10" x="150" />
+        <rect width="100" height="10" x="300" />
+      </g>
+    </svg>
+
+  </div>
+</body>
+
+</html>

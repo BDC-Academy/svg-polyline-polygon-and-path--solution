@@ -1,0 +1,71 @@
+body {
+  margin: 0;
+  font-family: 'Roboto', 'Oxygen', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#root {
+  
+}
+
+.my-graphic {
+  display: block;
+  margin: 0 auto;
+}
+
+#star {
+  transform-box: fill-box;
+  transform-origin: center;
+  /* transform: rotate(180deg); */
+  /* transition: transform 2s; */
+  /* animation: star-rotate 5s linear infinite; */
+}
+
+.wheel {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: wheel-rotate 2s linear infinite;
+}
+
+#road {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: road-translate 2s linear infinite;
+}
+
+@keyframes star-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes wheel-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes road-translate {
+  0% {
+    transform: translate(0, 380px);
+  }
+  100% {
+    transform: translate(400px, 380px);
+  }
+}
