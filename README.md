@@ -76,7 +76,7 @@ None, HTML natively supports SVG
 - _assignments/car.jpg
 
 ## Duration
-approx 45 to 60 minutes
+To be determined
 
 ## Links
 
